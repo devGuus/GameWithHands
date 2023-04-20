@@ -22,15 +22,23 @@ while True:
 
     if handsPoints:
         for points in handsPoints:
-            print(points)
+            # print(points) # mostra as cordenadas
             mp_drawing.draw_landmarks(image, points, mphands.HAND_CONNECTIONS)
             for id, cord in enumerate(points.landmark):
                 cordx, cordy = int(cord.x*width), int(cord.y*height)
-               #cv2.putText(image, str(id), (cordx, cordy+10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+                #cv2.putText(image, str(id), (cordx, cordy+10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
                 score.append((cordx, cordy))
 
-        fingers = [8, 12, 16, 20]
+        fingers = [8, 12, 16, 20] #selecionando ponta dos 4 dedos
 
+        cont = 0
+        if points:
+            if score[4][0] < score[2][0]: # verificando polegar
+                cont +=1  
+            for i in fingers:
+                if score[i][1] < score[i - 2][1]: # verificando se o dedo está fechado 'score[x][y]'
+                    cont+=1
+        print(cont)
 
     cv2.imshow('Handtracker', image)
     cv2.waitKey(1)

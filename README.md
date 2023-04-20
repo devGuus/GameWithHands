@@ -6,3 +6,6 @@ Estou começando a conhecer e trabalhar com IA, quero desenvolver nesse reposit�
 
 ![image](https://user-images.githubusercontent.com/93723573/233449373-1f9c032d-d32b-431a-9d73-f6a7fe752c32.png)
 ##### O jogo que está sendo usado é o jogo do Dinossauro do Google
+
+![image](https://user-images.githubusercontent.com/93723573/233450806-7995bbfc-f9e7-411d-b727-0e11abe13330.png)
+##### A ideia principal é fazer essa mão chamar a função de pular e também reiniciar quando perder

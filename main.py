@@ -38,7 +38,7 @@ while True:
             for i in fingers:
                 if score[i][1] < score[i - 2][1]: # verificando se o dedo está fechado 'score[x][y]'
                     cont+=1
-        print(cont)
+        print(cont) 
 
     cv2.imshow('Handtracker', image)
     cv2.waitKey(1)

@@ -9,3 +9,7 @@ Estou começando a conhecer e trabalhar com IA, quero desenvolver nesse reposit�
 
 ![image](https://user-images.githubusercontent.com/93723573/233450806-7995bbfc-f9e7-411d-b727-0e11abe13330.png)
 ##### A ideia principal é fazer essa mão chamar a função de pular e também reiniciar quando perder
+#
+#### Trecho de código:
+![image](https://user-images.githubusercontent.com/93723573/233451882-903c2bdd-a095-42c3-86cc-f142789eba50.png)
+##### Pegando a posição de cada bolinha para identificar a posição dos dedos e mostrar quantos dedos estão abertos

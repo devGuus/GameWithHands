@@ -4,6 +4,9 @@ from sys import exit
 import os
 from random import randrange, choice
 
+import cv2
+import mediapipe as mp
+
 pygame.init()
 pygame.mixer.init()
 
@@ -13,7 +16,7 @@ diretorio_sons = os.path.join(diretorio_principal, 'sons')
 
 LARGURA = 640
 ALTURA = 480
-    
+
 BRANCO = (255,255,255)
 
 tela = pygame.display.set_mode((LARGURA, ALTURA))
@@ -39,11 +42,11 @@ velocidade_jogo = 10
 def exibe_mensagem(msg, tamanho, cor):
     fonte = pygame.font.SysFont('comicsansms', tamanho, True, False)
     mensagem = f'{msg}' 
-    texto_formatado = fonte.render(mensagem, True, cor)
+    texto_formatado = fonte.render(mensagem, True, cor) 
     return texto_formatado
 
 def reiniciar_jogo():
-    global pontos, velocidade_jogo, colidiu, escolha_obstaculo
+    global pontos, velocidade_jogo, colcidiu, escolha_obstaculo
     pontos = 0
     velocidade_jogo = 10
     colidiu = False
@@ -228,9 +231,9 @@ while True:
         if pontos % 100 == 0:
             pontos += 1
         game_over = exibe_mensagem('GAME OVER', 40, (0,0,0))
-        tela.blit(game_over, (LARGURA//2, ALTURA//2))
+        tela.blit(game_over, (LARGURA // 3, ALTURA // 2.5))
         restart = exibe_mensagem('Pressione r para reiniciar', 20, (0,0,0))
-        tela.blit(restart, (LARGURA//2, (ALTURA//2) + 60))
+        tela.blit(restart, (LARGURA // 3, (ALTURA // 2.5) + 60))
 
     else:
         pontos += 1
@@ -245,5 +248,38 @@ while True:
             velocidade_jogo += 1
         
     tela.blit(texto_pontos, (520, 30))
+
+    mp_drawing = mp.solutions.drawing_utils
+    mp_drawing_styles = mp.solutions.drawing_styles
+    mphands = mp.solutions.hands
+
+    Hand = mphands.Hands(max_num_hands=1)
+
+    cap = cv2.VideoCapture(0)
+    hands = mphands.Hands()
+
+    while True:
+        data, image = cap.read()
+        image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
+
+        results = hands.process(image)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        handsPoints = results.multi_hand_landmarks
+        height, width, _ = image.shape
+        score = []
+        
+        if handsPoints:
+            for points in handsPoints:
+                mp_drawing.draw_landmarks(image, points, mphands.HAND_CONNECTIONS)
+                for id, cord in enumerate(points.landmark):
+                    cordx, cordy = int(cord.x*width), int(cord.y*height)
+                    score.append((cordx, cordy))
+
+            fingers = [8, 4]
+
+            if points:
+                if score[8][1] < score[4][0]:
+                    reiniciar_jogo()
+                    print('reiniciando')
 
     pygame.display.flip()
